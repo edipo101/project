@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class starter extends CI_Controller {
 	public function index(){
+		if (!$this->session->userdata('logged_in')) redirect(base_url() . 'login');
 		$this->load->model('pasivo_mdl');
 		$this->load->model('gasto_mdl');
 		$id = 3;
