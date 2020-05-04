@@ -19,4 +19,9 @@ class Profesion_mdl extends CI_Model {
 		$this->db->update('profesion', ['cant_hijos' => $cant]);
     	return 0;
 	}
+
+	public function fetch_all(){
+		$rows = $this->db->get('profesion');
+		return $rows->result();
+	}
 }

@@ -1,17 +1,24 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class starter extends CI_Controller {
+include_once (dirname(__FILE__) . "/my_controller.php"); 
+
+class starter extends MY_Controller {
 	public function index(){
-		if (!$this->session->userdata('logged_in')) redirect(base_url() . 'login');
+		$this->is_logged();
+
 		$this->load->model('pasivo_mdl');
 		$this->load->model('gasto_mdl');
-		$id = 3;
+		$this->load->model('profesion_mdl');
+		$profesion = $this->profesion_mdl->fetch_by_id($this->session->userdata('id_profesion'));
+
+		$data_header = array('profesion' => $profesion);
 		$data = array(
-			'pasivos' => $this->pasivo_mdl->fetch_all($id),
-			'gastos' => $this->gasto_mdl->fetch_all($id)
+			'pasivos' => $this->pasivo_mdl->fetch_all($profesion->id_profesion),
+			'gastos' => $this->gasto_mdl->fetch_all($profesion->id_profesion),
+			'profesion' => $profesion
 		);
-		$this->load->view('page/page_header');
+		$this->load->view('page/page_header', $data_header);
 		$this->load->view('cashflow', $data);
 		$this->load->view('page/page_footer');
 	}

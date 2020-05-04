@@ -25,4 +25,19 @@ class Usuario_mdl extends CI_Model {
 		$this->db->insert('usuario', $values);
 		return $this->db->insert_id();
 	}
+
+	public function update($id, $values){
+		$this->db->where('id_usuario', $id);
+		$this->db->update('usuario', $values);
+    	return 0;
+	}
+
+	//Algun usuario está ocupando cierta profesion
+	public function is_used($id_profesion){
+		$query = 'select count(*) as cant
+					from usuario
+					where id_profesion = '.$id_profesion;
+		$result = $this->db->query($query)->row()->cant;
+		return $result;
+	}
 }
